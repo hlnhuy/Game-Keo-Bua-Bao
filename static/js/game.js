@@ -16,3 +16,35 @@ function enterGame() {
         document.getElementById('status').innerText = "Đang chờ đối thủ để bắt đầu...";
     }
 }
+socket.on('start_countdown', (data) => {
+    // Cập nhật tên đối thủ lên bảng điểm
+    document.getElementById('op_name_display').innerText = data.op_name;
+    document.getElementById('status').innerText = "Trận đấu bắt đầu! Hãy chọn...";
+    document.getElementById('choice-buttons').classList.remove('pointer-events-none', 'opacity-30');
+    startTimer(); 
+});
+
+function startTimer() {
+    timeLeft = 10;
+    document.getElementById('timer').innerText = timeLeft;
+    document.getElementById('timer').classList.remove('text-red-500');
+    clearInterval(timerInterval);
+    
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').innerText = timeLeft;
+        if(timeLeft <= 3) document.getElementById('timer').classList.add('text-red-500');
+        
+        if(timeLeft <= 0) {
+            clearInterval(timerInterval);
+            pick('none'); // Tự động xử thua khi hết giờ
+        }
+    }, 1000);
+}
+
+function pick(choice) {
+    clearInterval(timerInterval);
+    socket.emit('make_choice', {choice: choice});
+    document.getElementById('choice-buttons').classList.add('pointer-events-none', 'opacity-30');
+    document.getElementById('status').innerText = choice === 'none' ? "Hết thời gian!" : "Đã chọn " + choice.toUpperCase();
+}
