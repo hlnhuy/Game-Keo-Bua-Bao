@@ -6,6 +6,10 @@
     <title>Oẳn Tù Tì Network</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        .choice-btn { transition: all 0.2s; }
+        .choice-btn:hover { transform: scale(1.15); }
+    </style>
 </head>
 <body class="bg-slate-900 text-white min-h-screen flex items-center justify-center font-sans">
     <div class="w-full max-w-lg p-4">
@@ -18,6 +22,42 @@
                     class="w-full bg-indigo-600 hover:bg-indigo-500 py-4 rounded-2xl font-bold text-xl transition transform active:scale-95 shadow-lg">
                 BẮT ĐẦU
             </button>
+        </div>
+
+        <div id="game-area" class="hidden flex flex-col gap-6">
+            <div class="bg-slate-800 p-6 rounded-3xl border border-slate-700 shadow-xl">
+                <div class="flex justify-between items-center px-4">
+                    <div class="text-center w-2/5">
+                        <p id="my_name_display" class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 truncate italic">BẠN</p>
+                        <p id="my-score" class="text-5xl font-black text-indigo-400">0</p>
+                    </div>
+                    <div class="text-2xl font-black text-slate-600 italic">VS</div>
+                    <div class="text-center w-2/5">
+                        <p id="op_name_display" class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 truncate italic">ĐỐI THỦ</p>
+                        <p id="op-score" class="text-5xl font-black text-rose-500">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="play-card" class="bg-slate-800 p-8 rounded-3xl text-center border-2 border-slate-700 relative shadow-2xl">
+                <div id="timer" class="text-7xl font-black text-indigo-500 mb-2">10</div>
+                
+                <div id="choice-buttons" class="flex justify-around items-center my-8">
+                    <button onclick="pick('bua')" class="choice-btn text-6xl p-4 bg-slate-700 rounded-2xl shadow-inner active:bg-indigo-900">✊</button>
+                    <button onclick="pick('keo')" class="choice-btn text-6xl p-4 bg-slate-700 rounded-2xl shadow-inner active:bg-indigo-900">✌️</button>
+                    <button onclick="pick('bao')" class="choice-btn text-6xl p-4 bg-slate-700 rounded-2xl shadow-inner active:bg-indigo-900">✋</button>
+                </div>
+                <p id="status" class="text-indigo-400 font-medium italic animate-pulse tracking-wide">Đang chờ đối thủ...</p>
+            </div>
+
+            <div id="result-overlay" class="hidden bg-slate-800 p-8 rounded-3xl text-center border-4 shadow-2xl">
+                <h2 id="result-title" class="text-6xl font-black mb-4 italic uppercase tracking-tighter"></h2>
+                <p id="result-detail" class="text-xl mb-8 text-slate-300"></p>
+                <button onclick="resetGame()" 
+                        class="bg-white text-slate-900 px-12 py-4 rounded-full font-black uppercase tracking-tighter hover:bg-indigo-400 hover:text-white transition transform active:scale-90">
+                    VÁN TIẾP THEO
+                </button>
+            </div>
         </div>
     </div>
     <script src="/static/js/game.js"></script>
